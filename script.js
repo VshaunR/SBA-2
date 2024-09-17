@@ -104,7 +104,7 @@ function getLearnerData(ci, ag, submissions) {
                 }
             };
             try{
-              if(id ==125 && assignmentId === innerId && submitDate ==due  || submitDate >due ){
+              if(id ==id && assignmentId === innerId && submitDate ==due  || submitDate >due ){
                 console.log(submitDate,due,id,score,points);
              
                 let avg;
@@ -123,27 +123,10 @@ function getLearnerData(ci, ag, submissions) {
                 obj={
                   id:id,
                   avg:avg,
-              
+                  firstAssignment:`${score}/${points}`  
                 }
-                result.push(obj)
-              
-              }else if(id ==132 && assignmentId == innerId && submitDate ==due || submitDate >due){
-                console.log(submitDate,due,id,score,points)
-                if(submitDate >due){
-               
-                  avg = Math.ceil((score/points)*100) - ( Math.ceil((score/points)*100)*.10)
-                
-                }else{
-                  avg = Math.ceil((score/points)*100) 
-                }
-                obj={
-                  id:id,
-                  avg:Math.ceil((score/points)*100),
-                
-                }
-                result.push(obj)
+                result.push(obj)      
               }
-              // console.log(submitDate,due)
             }catch(err){
               console.log(err)
             }

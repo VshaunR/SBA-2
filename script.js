@@ -73,6 +73,15 @@ const submissions = [
       submitted_at: "2023-03-07",
       score: 140
     }
+  },
+  {
+    // checking if it would work with another learner id
+    learner_id: 135,
+    assignment_id: 2,
+    submission: {
+      submitted_at: "2023-03-07",
+      score: 10
+    }
   }
 ];
 

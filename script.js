@@ -79,60 +79,30 @@ const submissions = [
 function getLearnerData(ci, ag, submissions) {
   // here, we would process this data to achieve the desired result.
     let result=[];
-    let myObj={};
-    let assignment = getAssignment(ag);
-    // console.log(assignment)
+   let course;
+    for(i in ag){
+      // console.log(ag.course_id)
+      course= ag.course_id;
+    }
+    //  console.log(course)
+    //if course id does not match then error is logged
+    try{
     
-        for(let i = 0;i<submissions.length;i++){
-          let id = submissions[i].learner_id;
-          let assignmentId = submissions[i].assignment_id;
-          let score = submissions[i].submission.score;
-          let submitDate = submissions[i].submission.submitted_at;
-          let points =0;
-          let due ='';
-          let innerId;
-          let obj={}
-            for(let j=0;j<assignment.length;j++){
-              let idInAssignment = assignment[j].id;             
-             
+      if(ci.id ===course){
+        result = handleSubmissions(submissions)
+        
+      }else {
+        console.err('Course id does not match');
+        
+      }
 
-                if(id ==id && assignmentId ===idInAssignment){
-                  innerId =idInAssignment
-                  due = assignment[j].due_at;
-                  points = assignment[j].points_possible;
-                  // console.log(due,points)
-                }
-            };
-            try{
-              if(id ==id && assignmentId === innerId && submitDate ==due  || submitDate >due ){
-                console.log(submitDate,due,id,score,points);
-             
-                let avg;
-          
-                if(submitDate >due){
-                 // for late assignments
-                  avg = Math.ceil((score/points)*100) - ( Math.ceil((score/points)*100)*.10)
-                 
-                }else if(points ===0){
-                  // if dividend is 0 then avg is undefined
-                  avg = undefined
-                }else
-                {
-                  avg = Math.ceil((score/points)*100) 
-                }
-                obj={
-                  id:id,
-                  avg:avg,
-                  firstAssignment:`${score}/${points}`  
-                }
-                result.push(obj)      
-              }
-            }catch(err){
-              console.log(err)
-            }
-           
-        };
-        // console.log(result)
+
+    }catch(err){
+      if(err){
+        console.log(err)
+      }
+    }  
+      
 
   // const result = [
   //   {
@@ -163,4 +133,69 @@ for(let i in ag){
 }
   // console.log(arr)
   return arr;
-}
+};
+
+
+function handleSubmissions(submissions){
+let result =[];
+  let assignment = getAssignment(ag);
+  for(let i = 0;i<submissions.length;i++){
+    let id = submissions[i].learner_id;
+    let assignmentId = submissions[i].assignment_id;
+    //in case its a string
+    let score = Number(submissions[i].submission.score);
+    let submitDate = submissions[i].submission.submitted_at;
+    let points =0;
+    let due ='';
+    let innerId;
+    let obj={}
+      for(let j=0;j<assignment.length;j++){
+        let idInAssignment = assignment[j].id;             
+       
+
+          if(id ==id && assignmentId ===idInAssignment){
+            innerId =idInAssignment
+            due = assignment[j].due_at;
+            //in case its a string
+            points = Number(assignment[j].points_possible);
+            // console.log(due,points)
+          }
+      };
+      try{
+        if(id ==id && assignmentId === innerId && submitDate ==due  || submitDate >due ){
+          // console.log(submitDate,due,id,score,points);
+       
+          let avg;
+    
+          if(submitDate >due){
+           // for late assignments
+           
+            avg = Math.ceil((score/points)*100) - ( Math.ceil((score/points)*100)*.10)
+            isLate=true  + ` -10%`
+         
+          }else if(points ===0){
+            // if dividend is 0 then avg is undefined
+            avg = undefined
+          }else if(submitDate==due) {
+            avg = Math.ceil((score/points)*100) 
+            isLate= false;
+          }
+          obj={
+            id:id,
+            avg:avg,
+            total:`${score}/${points}`,
+            assignment_id:assignmentId ,
+            late:isLate
+          }
+          result.push(obj) 
+        }
+      
+      }catch(err){
+        console.log(err)
+      }
+     
+  };
+  return result;
+};
+
+handleSubmissions(submissions)

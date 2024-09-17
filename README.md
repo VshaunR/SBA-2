@@ -7,6 +7,8 @@ in seperate objects
  git, github,gitbash,vs code
 ## Installation
  git clone https://github.com/VshaunR/SBA-2.git in a folder of your choice
+ install vsCode
+ open folder where folder is cloned
 ## AWKNOWLEDGEMENTS:
 w3schools.com
 MDN docs

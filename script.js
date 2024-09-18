@@ -90,10 +90,10 @@ function getLearnerData(ci, ag, submissions) {
     let result=[];
    let course;
     for(i in ag){
-      // console.log(ag.course_id)
+  
       course= ag.course_id;
     }
-    //  console.log(course)
+
     //if course id does not match then error is logged
     try{
     
@@ -113,20 +113,6 @@ function getLearnerData(ci, ag, submissions) {
     }  
       
 
-  // const result = [
-  //   {
-  //     id: 125,
-  //     avg: 0.985, // (47 + 150) / (50 + 150)
-  //     1: 0.94, // 47 / 50
-  //     2: 1.0 // 150 / 150
-  //   },
-  //   {
-  //     id: 132,
-  //     avg: 0.82, // (39 + 125) / (50 + 150)
-  //     1: 0.78, // 39 / 50
-  //     2: 0.833 // late: (140 - 15) / 150
-  //   }
-  // ];
 
   return result;
 }
@@ -134,19 +120,20 @@ function getLearnerData(ci, ag, submissions) {
 const result = getLearnerData(ci, ag, submissions);
  console.log(result);
 
-
+//getting the array in groupAssignments object for easier extraction of data
 function getAssignment(ag){
   let arr = [];
 for(let i in ag){
   arr=  ag.assignments.slice(0)
 }
-  // console.log(arr)
+
   return arr;
 };
 
-
+//handling the submission array , declaring all the variables I need
 function handleSubmissions(submissions){
 let result =[];
+//getting my assignment array
   let assignment = getAssignment(ag);
   for(let i = 0;i<submissions.length;i++){
     let id = submissions[i].learner_id;
@@ -157,15 +144,16 @@ let result =[];
     let points =0;
     let due ='';
     let innerId;
-    let obj={}
+    let obj={};
+    let isLate;
       for(let j=0;j<assignment.length;j++){
         let idInAssignment = assignment[j].id;             
-       
+       //using a nested for loop to extract and asign the values I need
 
           if(id ==id && assignmentId ===idInAssignment){
             innerId =idInAssignment
             due = assignment[j].due_at;
-            //in case its a string
+            //in case its a string then string will be converted to number
             points = Number(assignment[j].points_possible);
             // console.log(due,points)
           }
@@ -178,7 +166,7 @@ let result =[];
     
           if(submitDate >due){
            // for late assignments
-           
+           //returns a boolean and deducts 10% of total grade
             avg = Math.ceil((score/points)*100) - ( Math.ceil((score/points)*100)*.10)
             isLate=true  + ` -10%`
          
